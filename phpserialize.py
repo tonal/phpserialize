@@ -514,7 +514,22 @@ def load(fp, charset='utf-8', errors=default_errors, decode_strings=False,
             return None
         raise ValueError('unexpected opcode - %s' % repr(type_))
 
-    return _unserialize()
+    chunk = _read_until(':');
+    if '|' in chunk:
+        # We may be dealing with a serialized session, in which case keys
+        # followed by a pipe are preceding the serialized data.
+        fp.seek(0) # Reset pointer
+        unserialized_data = {}
+        while 1:
+            try:
+                key = _read_until('|');
+            except ValueError:
+                break # end of stream
+            unserialized_data[key] = _unserialize()
+    else:
+        unserialized_data = _unserialize()
+
+    return unserialized_data
 
 
 def loads(data, charset='utf-8', errors=default_errors, decode_strings=False,
