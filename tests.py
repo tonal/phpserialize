@@ -100,9 +100,9 @@ class PhpSerializeTestCase(unittest.TestCase):
         self.assertEqual(user.__name__, 'WP_User')
 
     def test_session(self):
-        data = b'session_key|a:1:{s:3:"foo";s:3:"bar";}'
+        data = b'foo|a:1:{s:1:"a";s:1:"b";}bar|a:1:{s:1:"c";s:1:"d";}'
         session = phpserialize.loads(data)
-        self.assertEqual(session, {'session_key': {'foo': 'bar'}})
+        self.assertEqual(session, {'foo': {'a': 'b'}, 'bar': {'c': 'd'}})
 
 
 if __name__ == '__main__':
