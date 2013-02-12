@@ -22,7 +22,7 @@ setup(
     author='Armin Ronacher',
     author_email='armin.ronacher@active-4.com',
     version='1.4',
-    url='http://github.com/mitsuhiko/phpserialize',
+    url='https://github.com/nathanwalsh/phpserialize',
     py_modules=['phpserialize'],
     description='a port of the serialize and unserialize '
                 'functions of php to python.',
