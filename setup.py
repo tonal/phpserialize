@@ -21,7 +21,7 @@ setup(
     name='phpserialize',
     author='Armin Ronacher',
     author_email='armin.ronacher@active-4.com',
-    version='1.3',
+    version='1.4',
     url='http://github.com/mitsuhiko/phpserialize',
     py_modules=['phpserialize'],
     description='a port of the serialize and unserialize '

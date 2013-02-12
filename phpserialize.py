@@ -236,6 +236,8 @@ r"""
     Changelog
     =========
 
+    1.4
+        -   added support for PHP sessions
     1.3
         -   added support for Python 3
 
