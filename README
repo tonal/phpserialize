@@ -1,3 +1,8 @@
-a port of the serialize and unserialize functions of php to python. This module
+A port of the serialize and unserialize functions of php to python. This module
 implements the python serialization interface (eg: provides dumps, loads and
 similar functions).
+
+
+Sessions unserializing is also supported if they were saved using PHP's
+internal serializer and without encryption (see
+http://www.hardened-php.net/suhosin/configuration.html#suhosin.session.encrypt).
