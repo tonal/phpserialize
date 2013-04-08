@@ -104,6 +104,26 @@ class PhpSerializeTestCase(unittest.TestCase):
         session = phpserialize.loads(data)
         self.assertEqual(session, {'foo': {'a': 'b'}, 'bar': {'c': 'd'}})
 
+    def test_loads_unicode_strings(self):
+        data = u's:6:"Björk";'
+        result = phpserialize.loads(data)
+        self.assertEqual(result, u'Björk')
+
+    def test_loads_unicode_dict(self):
+        data = u'a:1:{s:6:"Björk";s:16:"Guðmundsdóttir";}'
+        result = phpserialize.loads(data)
+        self.assertEqual(result, {u'Björk': u'Guðmundsdóttir'})
+
+    def test_basic_unicode_object_hook(self):
+        data = u'O:8:"stdClass":1:{s:4:"name";s:6:"Björk";}'
+        user = phpserialize.loads(data, object_hook=phpserialize.phpobject)
+        self.assertEqual(user.name, u'Björk')
+
+    def test_session_loads_unicode_strings(self):
+        data = u'Björk|a:1:{s:6:"Björk";s:16:"Guðmundsdóttir";}'
+        session = phpserialize.loads(data)
+        self.assertEqual(session, {u'Björk': {u'Björk': u'Guðmundsdóttir'}})
+
 
 if __name__ == '__main__':
     unittest.main()

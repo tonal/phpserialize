@@ -414,7 +414,7 @@ def dumps(data, charset='utf-8', errors=default_errors, object_hook=None):
 
 
 def load(fp, charset='utf-8', errors=default_errors, decode_strings=False,
-         object_hook=None, array_hook=None):
+         object_hook=None, array_hook=None, return_unicode=False):
     """Read a string from the open file object `fp` and interpret it as a
     data stream of PHP-serialized objects, reconstructing and returning
     the original object hierarchy.
@@ -492,6 +492,8 @@ def load(fp, charset='utf-8', errors=default_errors, decode_strings=False,
             _expect(b'"')
             if decode_strings:
                 data = data.decode(charset, errors)
+            if return_unicode:
+                data = unicode(data, charset)
             _expect(b';')
             return data
         if type_ == b'a':
@@ -528,6 +530,8 @@ def load(fp, charset='utf-8', errors=default_errors, decode_strings=False,
                 key = _read_until('|');
             except ValueError:
                 break # end of stream
+            if return_unicode:
+                key = unicode(key, charset)
             unserialized_data[key] = _unserialize()
     else:
         unserialized_data = _unserialize()
@@ -536,13 +540,17 @@ def load(fp, charset='utf-8', errors=default_errors, decode_strings=False,
 
 
 def loads(data, charset='utf-8', errors=default_errors, decode_strings=False,
-          object_hook=None, array_hook=None):
+          object_hook=None, array_hook=None, return_unicode=False):
     """Read a PHP-serialized object hierarchy from a string.  Characters in the
     string past the object's representation are ignored.  On Python 3 the
     string must be a bytestring.
     """
+    # Convert unicode strings to byte strings.
+    if type(data) == unicode:
+        data = data.encode(charset)
+        return_unicode = True
     return load(BytesIO(data), charset, errors, decode_strings,
-                object_hook, array_hook)
+                object_hook, array_hook, return_unicode)
 
 
 def dump(data, fp, charset='utf-8', errors=default_errors, object_hook=None):
