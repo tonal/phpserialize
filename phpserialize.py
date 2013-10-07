@@ -584,6 +584,19 @@ def dict_to_list(d):
 def dict_to_tuple(d):
     """Converts an ordered dict into a tuple."""
     return tuple(dict_to_list(d))
+    
+def session_dump(data, charset='utf-8', errors=default_errors, object_hook=None):
+    """Returns a string ready to be written in a php session file.
+    For instance:
+        >>> session_dict={'user_id':3,'user_name':"Epic guy"}
+        >>> phpserialize.session_dump(session_dict)
+        'user_name|s:8:"Epic guy";user_id|i:3;'
+    """
+    buffer=""
+    for item in data.keys():
+        buffer=buffer+item+"|"+dumps(data[item],charset,errors,object_hook)
+    return buffer
+
 
 
 serialize = dumps
